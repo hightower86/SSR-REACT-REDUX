@@ -8,12 +8,18 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import Home from './client/component/Home';
 import renderer from './helpers/renderer';
+import createStore from './helpers/cteateStore';
 
 const app = express();
 
 app.use(express.static('public'));
 app.get('*', (req, res) => {
-  res.send(renderer(req));
+  const store = createStore();
+
+  // Some logic to initialize
+  // and load data into the store
+
+  res.send(renderer(req, store));
 });
 
 app.listen(3000, () => {

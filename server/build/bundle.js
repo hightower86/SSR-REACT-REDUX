@@ -138,16 +138,27 @@ var _renderer = __webpack_require__(5);
 
 var _renderer2 = _interopRequireDefault(_renderer);
 
+var _cteateStore = __webpack_require__(8);
+
+var _cteateStore2 = _interopRequireDefault(_cteateStore);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var app = (0, _express2.default)(); // const express = require('express');
+// const express = require('express');
 // const React = require('react');
 // const renderToString = require('react-dom/server').renderToString;
 // const Home = require('./client/component/Home').default;
 
+var app = (0, _express2.default)();
+
 app.use(_express2.default.static('public'));
 app.get('*', function (req, res) {
-  res.send((0, _renderer2.default)(req));
+  var store = (0, _cteateStore2.default)();
+
+  // Some logic to initialize
+  // and load data into the store
+
+  res.send((0, _renderer2.default)(req, store));
 });
 
 app.listen(3000, function () {
@@ -179,6 +190,8 @@ var _reactRouterDom = __webpack_require__(6);
 
 var _server = __webpack_require__(1);
 
+var _reactRedux = __webpack_require__(11);
+
 var _Routes = __webpack_require__(7);
 
 var _Routes2 = _interopRequireDefault(_Routes);
@@ -187,11 +200,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //import Home from '../client/component/Home';
 
-exports.default = function (req) {
+exports.default = function (req, store) {
   var content = (0, _server.renderToString)(_react2.default.createElement(
-    _reactRouterDom.StaticRouter,
-    { location: req.url, content: {} },
-    _react2.default.createElement(_Routes2.default, null)
+    _reactRedux.Provider,
+    { store: store },
+    _react2.default.createElement(
+      _reactRouterDom.StaticRouter,
+      { location: req.url, content: {} },
+      _react2.default.createElement(_Routes2.default, null)
+    )
   ));
 
   return '\n  <html>\n    <head></head>\n      <body>\n        <div id=\'root\'>' + content + '</div>\n        <script src="bundle.js"></script>\n      </body>\n  </html>\n  ';
@@ -236,6 +253,49 @@ exports.default = function () {
       } })
   );
 };
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _redux = __webpack_require__(9);
+
+var _reduxThunk = __webpack_require__(10);
+
+var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function () {
+  var store = (0, _redux.createStore)(reducers, {}, (0, _redux.applyMiddleware)(_reduxThunk2.default));
+
+  return store;
+};
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("redux");
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = require("redux-thunk");
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-redux");
 
 /***/ })
 /******/ ]);
