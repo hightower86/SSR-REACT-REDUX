@@ -2,11 +2,8 @@
 // const React = require('react');
 // const renderToString = require('react-dom/server').renderToString;
 // const Home = require('./client/component/Home').default;
-
+import 'babel-polyfill';
 import express from 'express';
-import React from 'react';
-import { renderToString } from 'react-dom/server';
-import Home from './client/component/Home';
 import renderer from './helpers/renderer';
 import createStore from './helpers/cteateStore';
 
